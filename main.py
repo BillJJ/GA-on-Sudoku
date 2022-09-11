@@ -1,22 +1,27 @@
+import random
+
 from genetic_algo import run
 from matplotlib import pyplot as plt
 
-pop_size = 100
-num_parents = 25
-mutation_rate = 0.35
+num_parents = 36
+pop_size = 80
+mutation_rate = 0.8
 
 trials_per_average = 5
 
-pop_size = []
+x = []
 results = []
-plt.xlabel('Population Size')
-plt.ylabel('Average solve times (s)')
+plt.xlabel('Run Rate')
+plt.ylabel('Time Taken (s)')
+plt.title('A few trials')
 
-for i in range(25, 101, 25):
-    pop_size.append(i)
+def trial(a, b, c, d): return sum([run(a, b, c) for i in range(d)]) / d
 
-    tries = [run(i, i//4, mutation_rate) for j in range(trials_per_average)]
-    results.append(sum(tries) / len(tries))
-    print("Pop_size =",i, ", results =",results[-1])
-    plt.plot(pop_size, results)
+for i in range(20):
+    x.append(i)
+    results.append(run(pop_size, num_parents, mutation_rate))
+    print("Trial $", i, "results =",results[-1])
+    plt.plot(x, results)
     plt.pause(0.01)
+
+plt.show()
