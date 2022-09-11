@@ -6,10 +6,9 @@ from population import *
 print_interval = 50
 
 def print(*s):
-    if __name__ != '__main__':
-        sys.stdout.write(" ".join(list(map(str, s))) + "\n")
+    sys.stdout.write(" ".join(list(map(str, s))) + "\n")
 
-def run(pop_size = 100, num_parents = 25, mutation_rate = 0.35):
+def run(pop_size = 50, num_parents = int(50*0.45), mutation_rate = 0.35, grw=34):
     p = Population(pop_size)
     last_best = 0
     run = 0
@@ -26,9 +25,6 @@ def run(pop_size = 100, num_parents = 25, mutation_rate = 0.35):
         best_overall = min(best_overall, p.best_fitness_val)
         if t % print_interval == 0:
             print(f"Restart: {restarts} ---- Gen {t} best fitness: {p.best_fitness_val}, avg fitness : {p.avg_fitness_val}")
-            if t % (print_interval * 10) == 0:
-                p.pop.sort()
-                print(p.pop[0])
         if p.best_fitness_val == 0:
             print("FOUND")
             print(p.pop[0])
