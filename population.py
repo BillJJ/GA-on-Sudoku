@@ -66,7 +66,7 @@ class Population:
     # a population of Sudoku boards
     def __init__(self, pop_size=100):
         self.pop_size = pop_size
-        self.pop = np.array([Board() for i in range(pop_size)])
+        self.pop = [Board() for i in range(pop_size)]
         self.fit_func = lambda x : x.fit
 
     def evaluate(self):
@@ -80,9 +80,13 @@ class Population:
         self.best_fitness_val = best
         self.avg_fitness_val = s / self.pop_size
 
-    def select_mating_pool(self, num_parents, k=10):
+    def select_mating_pool(self, num_parents):
         self.pop.sort()
-        self.parents = np.array(self.pop[:num_parents])
+        self.parents = []
+        for i in range(num_parents):
+            p = min(random.sample(range(self.pop_size), 5))
+            self.parents.append(self.pop[p])
+
 
     def crossover(self, a, b)->Board:
         k = np.random.choice([i for i in range(nine)], random.randint(1, 8))
@@ -102,8 +106,8 @@ class Population:
     def breed_new_pop(self, mutation_rate):
         new_pop = []
         for i in range(self.pop_size):
-            child = self.crossover(self.parents[i%self.parents.size], self.parents[(i+1)%self.parents.size])
+            child = self.crossover(self.parents[i%len(self.parents)], self.parents[(i+1)%len(self.parents)])
             if random.random() <= mutation_rate:
                 self.mutate(child)
             new_pop.append(child)
-        self.pop = np.array(new_pop)
+        self.pop = new_pop
